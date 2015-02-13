@@ -1,0 +1,161 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<svg id ='Cali' width='600' height='600'>
+	</svg>
+	<script type="text/javascript">
+	// SVG = scable vector graphics
+	
+	// game engine = piece of code that executes very often (1-20 milliseconds) that updates the state of your game
+	// 1. Make 5 svg circles using oop
+	// 2. Hold onto all JS objects in array called circles
+	// 3. Figure out a way to animate the circles
+	// 4. Figure out how to click on svg and make new circle show
+
+	// Have info property (x:7, y:9,r: , )
+	// velocity (x:1 , y:1) doesn't change (how much you want to change by )
+
+		function Circle(html_id, cx, cy, r, vx, vy,color)
+		{
+			this.info = {id: html_id, cx: cx, cy: cy, r: r, fill: color } 
+			this.velocities = {x: vx, y: vy}
+			//this function makes a new circle element within our SVG tag!
+			this.makeSVGcircle = function(){
+				var svg = document.getElementById('Cali');
+				var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+				//grab all of the info I need for setting the properties of the SVG circle element!
+				var obj = this.info
+			    for (var k in obj){
+			        circle.setAttribute(k, obj[k]);
+			    }
+			    svg.appendChild(circle);
+			}
+			//makeSVGcircle();
+		}
+		
+		var Circles = [];
+		var num_of_circles = 0;
+		var random_num = function(max){
+			return Math.floor((Math.random()*max)+10);
+		}
+		var random_num2 = function(max){
+		return Math.floor((Math.random()*max)-5);
+		}
+		function color()
+		{
+			var red = Math.floor(Math.random()*255);
+			var green = Math.floor(Math.random()*255);
+			var blue = Math.floor(Math.random()*255);
+			return "rgb(" + red + ", " + green + ", " + blue + ")";
+		}
+
+		for (var x = 1; x <10; x++){
+			var circle_object = new Circle(x,random_num(600),random_num(600),random_num(20),random_num2(10),random_num2(10),color());
+			circle_object.makeSVGcircle();
+			Circles.push(circle_object);
+		}
+		function loop(){
+			for(x in Circles){
+				var html_circle = document.getElementById(Circles[x].info.id);
+				Circles[x].info.cx = Circles[x].info.cx + Circles[x].velocities.x;
+				Circles[x].info.cy = Circles[x].info.cy + Circles[x].velocities.y;
+				html_circle.setAttribute("cx", Circles[x].info.cx);
+				html_circle.setAttribute("cy", Circles[x].info.cy);
+
+				if (Circles[x].info.cx-Circles[x].info.r <= 0) 
+					{
+
+						Circles[x].velocities.x *= -1;
+						if(Circles[x].info.cx-Circles[x].info.r+Circles[x].velocities.x <= 0)
+						{
+							Circles[x].info.cx += Circles[x].info.r;
+						}
+
+					};
+
+				if (Circles[x].info.cx+Circles[x].info.r >= 600) 
+					{
+						Circles[x].velocities.x *= -1;
+						if(Circles[x].info.cx+Circles[x].info.r+Circles[x].velocities.x >= 600)
+						{
+							Circles[x].info.cx -= Circles[x].info.r;
+						}						
+
+					};
+				if (Circles[x].info.cy-Circles[x].info.r <= 0) 
+					{
+
+						Circles[x].velocities.y *= -1;
+						if(Circles[x].info.cy-Circles[x].info.r+Circles[x].velocities.y <= 0)
+						{
+							Circles[x].info.cy += Circles[x].info.r;
+						}						
+
+					};
+				if (Circles[x].info.cy+Circles[x].info.r >= 600) 
+					{
+						Circles[x].velocities.y *= -1;
+						if(Circles[x].info.cy+Circles[x].info.r+Circles[x].velocities.y >= 600)
+						{
+							Circles[x].info.cy -= Circles[x].info.r;
+						}						
+					};
+				for(y in Circles)
+				{
+					var html_circle_y = document.getElementById(Circles[y].info.id);
+					if (y !== x)
+					{
+					if (((Circles[x].info.cx-Circles[y].info.cx)*(Circles[x].info.cx-Circles[y].info.cx)) + ((Circles[y].info.cy-Circles[x].info.cy)*(Circles[y].info.cy-Circles[x].info.cy)) <= (Circles[y].info.r+Circles[x].info.r)*(Circles[y].info.r+Circles[x].info.r))
+								{
+									if(Circles[y].info.r>=Circles[x].info.r)
+									{
+									Circles[y].info.r = Circles[y].info.r + Circles[x].info.r;
+									html_circle_y.setAttribute("r", Circles[y].info.r);
+									// delete Circles[y];
+									delete Circles[x];
+									// html_circle_y.remove(y);
+									html_circle.remove(x);
+									}
+									else{
+									Circles[x].info.r = Circles[y].info.r + Circles[x].info.r;
+									html_circle.setAttribute("r", Circles[x].info.r);
+									// delete Circles[y];
+									delete Circles[y];
+									// html_circle_y.remove(y);
+									html_circle_y.remove(y);										
+									}
+								}
+					}
+				}
+					
+			}
+		}
+
+		setInterval(function(){loop()}, 50); 
+
+
+		//console.log(Circles);
+
+		//Wall collision:
+
+		// For collision - when x - r > 0 (when circle collides with the svg)
+		// x + r > width of svg
+		// Whenever you have a collision, just multiply the velocity by -1 (in the respective direction)
+
+		// y-r < 0 (for top collision)
+		// y+r > height of svg (for bottom collision)
+
+		// Ball collision:
+
+		//(x1,y1) (x2,y2)
+		// a2+b2=c2;
+		// square root /(y1-y2)2 + (x1-x2)2 = distance between 2 centers of the circles
+		// when distance between them equals d < (r1+r2)
+		// When collide - make it eat it
+		// When collide - make it bounce off
+
+	</script>
+</body>
+</html>

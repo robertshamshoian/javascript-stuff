@@ -1,0 +1,60 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		var person = {
+			name: 'Trey',
+			distance_travelled: 0,
+			say_name: function() {
+				alert(person.name);
+			},
+			say_something: function(x) {
+			 	alert(person.name + ' says "' + x + '"')
+			},
+			walk: function() {
+				alert(person.name + ' is walking');
+				person.distance_travelled = person.distance_travelled + 3;
+			},
+			run: function() {
+				alert(person.name + ' is running');
+				person.distance_travelled = person.distance_travelled + 10;
+			},
+			crawl: function() {
+				alert(person.name + ' is crawling');
+				person.distance_travelled = person.distance_travelled + 1;
+			},
+			doSomething: function(){
+				var rand = Math.floor((Math.random() * 3 )+ 1);
+				if( rand == 1) {
+					person.walk();
+				}
+				if( rand == 2) {
+					person.run();
+				}
+				if( rand == 3) {
+					person.crawl();
+				}
+
+			},
+			fly: function(x,y){
+				var rand = Math.floor((Math.random() * 10)+1);
+				var x = function() { alert('Flying!! & ' + x); }
+				var y = function() { alert('failed to fly...& ' + y); }
+				if( rand < 4){
+					x();
+				}
+				if(rand > 3 ){
+					y();
+				}
+			}
+
+		}
+			person.fly('eating ice cream','crying at home...');
+			console.log(person);
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

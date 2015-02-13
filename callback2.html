@@ -1,0 +1,32 @@
+<html>
+<head>
+	<title>Callbacks 2</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		function send_something_via_ajax(callback){
+		  $.get('http://api.worldweatheronline.com/free/v1/weather.ashx?&format=json&key=jtpc4myth9fwxjgwz9fh5fw5&q=94043', function(output){
+		    callback(output);
+		  }, 'json');
+		}
+		send_something_via_ajax(function(data){
+			console.log(data)
+		 });
+		send_something_via_ajax(function(weather){
+		$('h1').append("the weather is: " + weather.data.current_condition[0].weatherDesc[0].value)
+		});
+
+		send_something_via_ajax(function(){
+			$('h1').fadeOut(function(){
+				$('body').append("third method call success!")
+			});
+		})
+
+
+
+	</script>
+</head>
+<body>
+	<h1></h1>
+</body>
+</html>

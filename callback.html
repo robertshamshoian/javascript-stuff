@@ -1,0 +1,37 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		var randomName = function(){
+		 var name = ['George', 'Mike', 'Joe', 'Ninja'];
+		 var rand =  Math.floor((Math.random()*4));
+		 return name[rand];
+		}
+		var say = function(x){
+		   console.log('Say ', x);
+		 }
+		var yell = function(x){
+		   console.log('Yell ', x);
+		 }
+		var eat = function(x){
+		   console.log('Eat ', x);
+		 }
+		 var roll = function(x){
+		   console.log ('Roll ', x);
+		 }
+		 function random_function(a, x, y, z, f){
+		   var randfunc = [x,y,z,f];
+		   var rand =  Math.floor((Math.random()*4));
+		  return randfunc[rand](a());
+		 }
+		 
+		random_function(randomName, say, yell, eat, roll)
+		
+
+	</script>
+
+</head>
+<body>
+
+</body>
+</html>
